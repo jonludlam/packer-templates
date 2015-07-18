@@ -1,0 +1,153 @@
+{
+  "builders": [
+    {
+      "boot_command": [
+        "<esc><wait>",
+        "install <wait>",
+        "preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/debian-8/preseed.cfg <wait>",
+        "debian-installer=en_US <wait>",
+        "auto <wait>",
+        "locale=en_US <wait>",
+        "kbd-chooser/method=us <wait>",
+        "keyboard-configuration/xkb-keymap=us <wait>",
+        "netcfg/get_hostname={{ .Name }} <wait>",
+        "netcfg/get_domain=vagrantup.com <wait>",
+        "fb=false <wait>",
+        "debconf/frontend=noninteractive <wait>",
+        "console-setup/ask_detect=false <wait>",
+        "console-keymaps-at/keymap=us <wait>",
+        "<enter><wait>"
+      ],
+      "boot_wait": "10s",
+      "disk_size": 40960,
+      "http_directory": "http",
+      "iso_checksum": "22bae271a732333ebff150598292d9907d2c6001",
+      "iso_checksum_type": "sha1",
+      "iso_url": "{{user `mirror`}}/8.1.0/amd64/iso-cd/debian-8.1.0-amd64-CD-1.iso",
+      "shutdown_command": "echo 'vagrant'|sudo -S /sbin/shutdown -hP now",
+      "ssh_password": "vagrant",
+      "ssh_port": 22,
+      "ssh_username": "vagrant",
+      "ssh_wait_timeout": "10000s",
+      "type": "xenserver-iso",
+      "vm_name": "packer-debian-8.1-amd64",
+      "type": "xenserver-iso",
+      "remote_host": "{{user `remote_host`}}",
+      "remote_username": "{{user `remote_username`}}",
+      "remote_password": "{{user `remote_password`}}",
+      "http_port_min": "{{user `http_port_min`}}",
+      "http_port_max": "{{user `http_port_max`}}"
+    },
+    {
+      "boot_command": [
+        "<esc><wait>",
+        "install <wait>",
+        "preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/debian-8/preseed.cfg <wait>",
+        "debian-installer=en_US <wait>",
+        "auto <wait>",
+        "locale=en_US <wait>",
+        "kbd-chooser/method=us <wait>",
+        "keyboard-configuration/xkb-keymap=us <wait>",
+        "netcfg/get_hostname={{ .Name }} <wait>",
+        "netcfg/get_domain=vagrantup.com <wait>",
+        "fb=false <wait>",
+        "debconf/frontend=noninteractive <wait>",
+        "console-setup/ask_detect=false <wait>",
+        "console-keymaps-at/keymap=us <wait>",
+        "<enter><wait>"
+      ],
+      "boot_wait": "10s",
+      "disk_size": 40960,
+      "guest_os_type": "debian8-64",
+      "http_directory": "http",
+      "iso_checksum": "22bae271a732333ebff150598292d9907d2c6001",
+      "iso_checksum_type": "sha1",
+      "iso_url": "{{user `mirror`}}/8.1.0/amd64/iso-cd/debian-8.1.0-amd64-CD-1.iso",
+      "output_directory": "packer-debian-8.1-amd64-vmware",
+      "shutdown_command": "echo 'vagrant'|sudo -S /sbin/shutdown -hP now",
+      "ssh_password": "vagrant",
+      "ssh_port": 22,
+      "ssh_username": "vagrant",
+      "ssh_wait_timeout": "10000s",
+      "tools_upload_flavor": "linux",
+      "type": "vmware-iso",
+      "vm_name": "packer-debian-8.1-amd64",
+      "vmx_data": {
+        "cpuid.coresPerSocket": "1",
+        "memsize": "384",
+        "numvcpus": "1"
+      }
+    },
+    {
+      "boot_command": [
+        "<esc><wait>",
+        "install <wait>",
+        "preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/debian-8/preseed.cfg <wait>",
+        "debian-installer=en_US <wait>",
+        "auto <wait>",
+        "locale=en_US <wait>",
+        "kbd-chooser/method=us <wait>",
+        "keyboard-configuration/xkb-keymap=us <wait>",
+        "netcfg/get_hostname={{ .Name }} <wait>",
+        "netcfg/get_domain=vagrantup.com <wait>",
+        "fb=false <wait>",
+        "debconf/frontend=noninteractive <wait>",
+        "console-setup/ask_detect=false <wait>",
+        "console-keymaps-at/keymap=us <wait>",
+        "<enter><wait>"
+      ],
+      "boot_wait": "10s",
+      "disk_size": 40960,
+      "guest_os_type": "debian",
+      "http_directory": "http",
+      "iso_checksum": "22bae271a732333ebff150598292d9907d2c6001",
+      "iso_checksum_type": "sha1",
+      "iso_url": "{{user `mirror`}}/8.1.0/amd64/iso-cd/debian-8.1.0-amd64-CD-1.iso",
+      "output_directory": "packer-debian-8.1-amd64-parallels",
+      "parallels_tools_flavor": "lin",
+      "prlctl": [
+        [
+          "set",
+          "{{.Name}}",
+          "--memsize",
+          "384"
+        ],
+        [
+          "set",
+          "{{.Name}}",
+          "--cpus",
+          "1"
+        ]
+      ],
+      "prlctl_version_file": ".prlctl_version",
+      "shutdown_command": "echo 'vagrant'|sudo -S /sbin/shutdown -hP now",
+      "ssh_password": "vagrant",
+      "ssh_port": 22,
+      "ssh_username": "vagrant",
+      "ssh_wait_timeout": "10000s",
+      "type": "parallels-iso",
+      "vm_name": "packer-debian-8.1-amd64"
+    }
+  ],
+  "provisioners": [
+    {
+      "scripts": [
+        "scripts/debian/update.sh",
+        "scripts/common/sshd.sh",
+        "scripts/debian/networking.sh",
+        "scripts/debian/sudoers.sh",
+        "scripts/common/vagrant.sh"
+      ],
+      "type": "shell"
+    }
+  ],
+  "variables": {
+    "mirror": "http://cdimage.debian.org/cdimage/release",
+    "name": "debian-8.1",
+    "remote_host": "{{env `HOST`}}",
+    "remote_username": "{{env `USERNAME`}}",
+    "remote_password": "{{env `PASSWORD`}}",
+    "http_port_min": "{{env `HTTP_PORT`}}{{env `HTTP_PORT_MIN`}}",
+    "http_port_max": "{{env `HTTP_PORT`}}{{env `HTTP_PORT_MAX`}}"
+  }
+}

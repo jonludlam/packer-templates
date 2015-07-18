@@ -6,36 +6,37 @@
       "http_port_min": "{{env `HTTP_PORT`}}{{env `HTTP_PORT_MIN`}}",
       "http_port_max": "{{env `HTTP_PORT`}}{{env `HTTP_PORT_MAX`}}",
 
-      "mirror": "http://www.mirrorservice.org/sites/mirror.centos.org"
+      "mirror": "http://mirrors.kernel.org/centos"
   },
   "builders": [
     {
+      "boot_command": [
+        "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/centos-7.1/ks.cfg<enter><wait>"
+      ],
       "type": "xenserver-iso",
       "remote_host": "{{user `remote_host`}}",
       "remote_username": "{{user `remote_username`}}",
       "remote_password": "{{user `remote_password`}}",
       "http_port_min": "{{user `http_port_min`}}",
       "http_port_max": "{{user `http_port_max`}}",
-
       "format": "vdi_vhd",
-      "vm_name": "packer-centos-6.6-amd64",
+      "vm_name": "packer-centos-7.1-x86_64",
+      "boot_wait": "10s",
       "disk_size": 40960,
-      "iso_checksum": "4ed6c56d365bd3ab12cd88b8a480f4a62e7c66d2",
-      "iso_checksum_type": "sha1",
-      "iso_url": "{{user `mirror`}}/6.6/isos/x86_64/CentOS-6.6-x86_64-minimal.iso",
       "http_directory": "http",
-      "ssh_username": "root",
-      "ssh_password": "vmpassword",
-      "ssh_wait_timeout": "10000s",
+      "iso_checksum": "85bcf62462fb678adc0cec159bf8b39ab5515404bc3828c432f743a1b0b30157",
+      "iso_checksum_type": "sha256",
+      "iso_url": "{{user `mirror`}}/7.1.1503/isos/x86_64/CentOS-7-x86_64-DVD-1503-01.iso",
       "shutdown_command": "/sbin/halt",
-      "boot_command": [
-        "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/centos6-ks.cfg<enter><wait>"
-      ],
-      "boot_wait": "10s"
+      "ssh_password": "vagrant",
+      "ssh_port": 22,
+      "ssh_username": "vagrant",
+      "ssh_wait_timeout": "10000s"
     }
   ],
   "provisioners": [
     {
+      "environment_vars": [],
       "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
       "scripts": [
         "scripts/centos/fix-slow-dns.sh",
@@ -47,3 +48,4 @@
     }
   ]
 }
+

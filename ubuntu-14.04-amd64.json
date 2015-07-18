@@ -17,16 +17,16 @@
       "http_port_min": "{{user `http_port_min`}}",
       "http_port_max": "{{user `http_port_max`}}",
 
-      "vm_name": "packer-ubuntu-14.10-amd64",
+      "vm_name": "packer-ubuntu-14.04-amd64",
       "disk_size": 10000,
-      "iso_url": "{{user `mirror`}}/14.10/ubuntu-14.10-server-amd64.iso",
+      "format":"vdi_vhd",
+      "iso_url": "{{user `mirror`}}/14.04/ubuntu-14.04.2-server-amd64.iso",
       "iso_checksum_type": "sha1",
-      "iso_checksum": "0c1ebea31c3523cfe9a4ffed8bcf6c7d23dfb97b",
+      "iso_checksum": "3bfa6eac84d527380d0cc52db9092cde127f161e",
       "http_directory": "http",
       "ssh_username": "vagrant",
       "ssh_password": "vagrant",
       "ssh_wait_timeout": "10000s",
-      "format": "vdi_vhd",
 
       "boot_command": [
         "<esc><wait>",
