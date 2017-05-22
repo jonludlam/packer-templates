@@ -131,6 +131,10 @@
   ],
   "provisioners": [
     {
+      "environment_vars": [
+        "HOME_DIR=/home/vagrant"
+      ],
+      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E sh -eux '{{.Path}}'",
       "scripts": [
         "scripts/debian/update.sh",
         "scripts/common/sshd.sh",
